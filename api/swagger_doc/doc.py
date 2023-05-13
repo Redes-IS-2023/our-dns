@@ -14,6 +14,7 @@ testing_ep_doc = {
             "description": "Data retrieved successfully",
             "schema": {"type": "object"},
         },
+        "400": {"description": "Invalid param"},
         "404": {"description": "Data not found"},
     },
 }

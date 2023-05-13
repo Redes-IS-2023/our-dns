@@ -1,8 +1,9 @@
-import base64
 import firebase_admin
 from firebase_admin import credentials, db
 from flasgger import Swagger, swag_from
 from flask import Flask, jsonify
+from exceptions.exception import InvalidParamException
+from decoder import handle_decode
 from swagger_doc.doc import testing_ep_doc
 
 
@@ -23,15 +24,18 @@ swagger = Swagger(app)
 @app.route("/api/testing/<param>", methods=["GET"])
 @swag_from(testing_ep_doc)
 def get_data(param):
-    try:
-        param = base64.b64decode(param).decode("utf-8")
-    except:
-        return jsonify({"error": "Invalid parameter."}), 400
-
+    param = handle_decode(param)
     ref = db.reference(param)
     response = ref.get()
 
     return jsonify(response)
+
+
+@app.errorhandler(InvalidParamException)
+def handle_invalid_param(error):
+    response = jsonify({"code": 400, "error": str(error)})
+    response.status_code = 400
+    return response
 
 
 # Run the app on localhost:5000
