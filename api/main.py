@@ -1,19 +1,27 @@
+import os
+import configparser
 import firebase_admin
 from firebase_admin import credentials, db
 from flasgger import Swagger, swag_from
 from flask import Flask, jsonify, request
 from exceptions.exception import InvalidParamException
-from decoder import handle_decode
+from util.decoder import handle_decode
 from swagger_doc.doc import *
 
+# Get current project path
+base_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Access the config file properties
+config = configparser.ConfigParser()
+config_path = os.path.join(base_dir, "config.ini")
+config.read(config_path)
+cred_fname = config.get("DEFAULT", "cred_fname")
+firebase_url = config.get("DEFAULT", "firebase_url")
 
 # Initialize Firebase credentials
-cred = credentials.Certificate(
-    "api/cred/our-dns-firebase-adminsdk-nmspx-f5917011e1.json"
-)
-firebase_admin.initialize_app(
-    cred, {"databaseURL": "https://our-dns-default-rtdb.firebaseio.com"}
-)
+cred_path = os.path.join(base_dir, "cred", cred_fname)
+cred = credentials.Certificate(cred_path)
+firebase_admin.initialize_app(cred, {"databaseURL": firebase_url})
 
 # Initialize Flask & Swagger app
 app = Flask(__name__)
