@@ -1,7 +1,10 @@
 import base64
 import firebase_admin
 from firebase_admin import credentials, db
+from flasgger import Swagger, swag_from
 from flask import Flask, jsonify
+from swagger_doc.doc import testing_ep_doc
+
 
 # Initialize Firebase credentials
 cred = credentials.Certificate(
@@ -11,18 +14,23 @@ firebase_admin.initialize_app(
     cred, {"databaseURL": "https://our-dns-default-rtdb.firebaseio.com"}
 )
 
-# Initialize Flask app
+# Initialize Flask & Swagger app
 app = Flask(__name__)
+swagger = Swagger(app)
 
 
 # Define endpoint to retrieve data from Firebase
-@app.route("/data/<param>", methods=["GET"])
+@app.route("/api/testing/<param>", methods=["GET"])
+@swag_from(testing_ep_doc)
 def get_data(param):
-    param = base64.b64decode(param).decode("utf-8")
+    try:
+        param = base64.b64decode(param).decode("utf-8")
+    except:
+        return jsonify({"error": "Invalid parameter."}), 400
+
     ref = db.reference(param)
     response = ref.get()
 
-    # Return data as JSON response
     return jsonify(response)
 
 
