@@ -1,10 +1,10 @@
 import firebase_admin
 from firebase_admin import credentials, db
 from flasgger import Swagger, swag_from
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from exceptions.exception import InvalidParamException
 from decoder import handle_decode
-from swagger_doc.doc import testing_ep_doc
+from swagger_doc.doc import *
 
 
 # Initialize Firebase credentials
@@ -20,15 +20,24 @@ app = Flask(__name__)
 swagger = Swagger(app)
 
 
-# Define endpoint to retrieve data from Firebase
-@app.route("/api/testing/<param>", methods=["GET"])
-@swag_from(testing_ep_doc)
-def get_data(param):
+# Define testing endpoint to retrieve data from Firebase
+@app.route("/api/dns/testing/<param>", methods=["GET"])
+@swag_from(get_dns_testing_ep_doc)
+def get_dns_testing(param):
     param = handle_decode(param)
     ref = db.reference(param)
     response = ref.get()
 
     return jsonify(response)
+
+
+# Define endpoint to redirect encoded package to DNS server
+@app.route("/api/dns_resolver/", methods=["POST"])
+@swag_from(post_dns_package_ep_doc)
+def post_dns_package():
+    encoded_data = request.data
+    param = handle_decode(encoded_data)
+    return jsonify(param)
 
 
 @app.errorhandler(InvalidParamException)
