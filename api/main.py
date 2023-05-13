@@ -57,4 +57,4 @@ def handle_invalid_param(error):
 
 # Run the app on localhost:5000
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0")
