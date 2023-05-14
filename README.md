@@ -24,6 +24,7 @@ To access the API documentation go to:
 
 ## References
 
-[Build your Python image](https://docs.docker.com/language/python/build-images/)
-
-[Python | Reading .ini Configuration Files](https://www.geeksforgeeks.org/python-reading-ini-configuration-files/)
+- [Build your Python image](https://docs.docker.com/language/python/build-images/)
+- [Python | Reading .ini Configuration Files](https://www.geeksforgeeks.org/python-reading-ini-configuration-files/)
+- [dnspython](https://www.dnspython.org/)
+- [IP Geolocation by DB-IP](https://db-ip.com)
