@@ -1,10 +1,12 @@
 import os
 import configparser
 import firebase_admin
+
 from firebase_admin import credentials, db
 from flasgger import Swagger, swag_from
 from flask import Flask, jsonify, request
-from exceptions.exception import InvalidParamException
+from dns_forwarder import forward
+from exceptions.exception import InvalidParamException, UnreachableHostException
 from util.decoder import handle_decode
 from swagger_doc.doc import *
 
@@ -36,6 +38,10 @@ def get_dns_testing(param):
     ref = db.reference(param)
     response = ref.get()
 
+    # Forwarding to external DNS server
+    if response is None:
+        response = forward(param)
+
     return jsonify(response)
 
 
@@ -52,6 +58,13 @@ def post_dns_package():
 def handle_invalid_param(error):
     response = jsonify({"code": 400, "error": str(error)})
     response.status_code = 400
+    return response
+
+
+@app.errorhandler(UnreachableHostException)
+def handle_unreachable_host(error):
+    response = jsonify({"code": 404, "error": str(error)})
+    response.status_code = 404
     return response
 
 

@@ -1,3 +1,4 @@
 firebase_admin
 flasgger
 Flask==2.0.1
+dnspython
