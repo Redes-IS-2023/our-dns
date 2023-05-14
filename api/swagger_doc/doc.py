@@ -12,7 +12,16 @@ get_dns_testing_ep_doc = {
     "responses": {
         "200": {
             "description": "Data retrieved successfully",
-            "schema": {"type": "object"},
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "example": "single | multi | geo | weight",
+                    },
+                    "resolve": {"type": "array", "example": "[1.1.1.1, 2.2.2.2]"},
+                },
+            },
         },
         "400": {"description": "Invalid param"},
         "404": {"description": "Data not found"},

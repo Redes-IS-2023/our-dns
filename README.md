@@ -22,6 +22,10 @@
 To access the API documentation go to:
 [http://localhost:5000/apidocs/#/](http://localhost:5000/apidocs/#/)
 
+## Firebase
+
+To see an example of the realtime DB semi-structured data go to the next [file](/firebasedb/our-dns-default-rtdb-export.json)
+
 ## References
 
 - [Build your Python image](https://docs.docker.com/language/python/build-images/)

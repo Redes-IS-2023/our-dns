@@ -1,29 +1,35 @@
 {
   "com": {
     "atlas": {
-      "www": ["1.1.1.1", "2.2.2.2", "3.3.3.3"]
+      "www": {
+        "type": "multi",
+        "resolve": ["1.1.1.1", "2.2.2.2", "3.3.3.3"]
+      }
     },
     "google": {
-      "www": "8.8.8.8",
-      "firebase": "9.9.9.9"
+      "www": {
+        "type": "single",
+        "resolve": "8.8.8.8"
+      },
+      "firebase": {
+        "type": "single",
+        "resolve": "9.9.9.9"
+      }
     }
   },
   "org": {
     "heavy": {
-      "site": [
-        {
-          "ip": "12.0.0.1",
-          "priority": 0.3
-        },
-        {
-          "ip": "13.0.2.1",
-          "priority": 0.6
-        },
-        {
-          "ip": "10.0.0.1",
-          "priority": 0.1
-        }
-      ]
+      "site": {
+        "type": "weight",
+        "resolve": ["12.0.0.1", "13.0.2.1", "10.0.0.1"],
+        "priority": [0.3, 0.6, 0.1]
+      }
+    }
+  },
+  "cr": {
+    "nacion": {
+      "type": "geo",
+      "resolve": "127.0.0.1"
     }
   }
 }
