@@ -2,8 +2,8 @@ import base64
 import dns.query
 import dns.message
 
-package_file = "sample/package.bin"
-b64_file = "sample/b64.txt"
+package_file = "sample/out/package.bin"
+b64_file = "sample/out/b64.txt"
 
 
 # Test if the package.bin resolves correctly in the 8.8.8.8 server
