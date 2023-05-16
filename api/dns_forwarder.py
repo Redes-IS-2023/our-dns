@@ -2,6 +2,10 @@ import ast
 import configparser
 import os
 import dns.resolver
+import dns.query
+import dns.message
+from util.error_handler import isBytes
+
 
 from exceptions.exception import UnreachableHostException
 
@@ -29,3 +33,15 @@ def forward(domain):
         return {domain: response[0].address}
     except:
         raise UnreachableHostException("Domain not found: {}".format(domain))
+
+
+# Tries to forward host resolution to alternative DNS servers
+# @param dns_package_b: bytes
+# @return bytes
+def forward_package(dns_package_b):
+    try:
+        isBytes(dns_package_b)
+        dns_query = dns.message.from_wire(dns_package_b)
+        return dns.query.udp(dns_query, "8.8.8.8").to_wire()
+    except:
+        raise UnreachableHostException("Domain not found: {}".format(dns_query))

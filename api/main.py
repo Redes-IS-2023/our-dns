@@ -5,9 +5,10 @@ import firebase_admin
 from firebase_admin import credentials, db
 from flasgger import Swagger, swag_from
 from flask import Flask, jsonify, request
-from dns_forwarder import forward
+from dns_forwarder import forward, forward_package
+from dnslib import DNSRecord
 from exceptions.exception import InvalidParamException, UnreachableHostException
-from util.decoder import handle_decode
+from util.b64coder import handle_decode, handle_encode
 from swagger_doc.doc import *
 
 # Get current project path
@@ -30,11 +31,28 @@ app = Flask(__name__)
 swagger = Swagger(app)
 
 
+# Define endpoint to redirect encoded package to DNS server
+@app.route("/api/dns_resolver/", methods=["POST"])
+@swag_from(post_dns_package_ep_doc)
+def post_dns_package():
+    decoded_package = handle_decode(request.data)
+    dns_message = DNSRecord.parse(decoded_package)
+    domain_name = dns_message.q.qname.__str__()
+    domain_path = "/".join(domain_name.split(".")[::-1])
+    response = db.reference(domain_path).get()
+
+    # Forwarding to external DNS server
+    if response is None:
+        response = forward_package(decoded_package)
+        return handle_encode(response)
+    return jsonify(response)
+
+
 # Define testing endpoint to retrieve data from Firebase
 @app.route("/api/dns/testing/<param>", methods=["GET"])
 @swag_from(get_dns_testing_ep_doc)
 def get_dns_testing(param):
-    param = handle_decode(param)
+    param = "/".join(param.split(".")[::-1])
     ref = db.reference(param)
     response = ref.get()
 
@@ -43,15 +61,6 @@ def get_dns_testing(param):
         response = forward(param)
 
     return jsonify(response)
-
-
-# Define endpoint to redirect encoded package to DNS server
-@app.route("/api/dns_resolver/", methods=["POST"])
-@swag_from(post_dns_package_ep_doc)
-def post_dns_package():
-    encoded_data = request.data
-    param = handle_decode(encoded_data)
-    return jsonify(param)
 
 
 @app.errorhandler(InvalidParamException)

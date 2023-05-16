@@ -26,6 +26,12 @@ To access the API documentation go to:
 
 To see an example of the realtime DB semi-structured data go to the next [file](/firebasedb/our-dns-default-rtdb-export.json)
 
+## Sample packages
+
+In the sample folder
+`xxd -r hex_dump.txt package.bin`
+`hexyl package.bin`
+
 ## References
 
 - [Build your Python image](https://docs.docker.com/language/python/build-images/)
