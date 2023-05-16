@@ -1,6 +1,5 @@
 import base64
 
-# binary_data = b"\xdb\xe9\x01\x00\x00\x01\x00\x00\x00\x00\x00\x00\x06google\x03com\x00\x00\x01\x00\x01"
 bin_file = "sample/out/package.bin"
 b64_file = "sample/out/b64.txt"
 

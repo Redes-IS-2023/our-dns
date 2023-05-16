@@ -5,6 +5,7 @@ import firebase_admin
 from firebase_admin import credentials, db
 from flasgger import Swagger, swag_from
 from flask import Flask, jsonify, request
+from dns_resolver import resolve
 from dns_forwarder import forward, forward_package
 from dnslib import DNSRecord
 from exceptions.exception import InvalidParamException, UnreachableHostException
@@ -37,9 +38,7 @@ swagger = Swagger(app)
 def post_dns_package():
     decoded_package = handle_decode(request.data)
     dns_message = DNSRecord.parse(decoded_package)
-    domain_name = dns_message.q.qname.__str__()
-    domain_path = "/".join(domain_name.split(".")[::-1])
-    response = db.reference(domain_path).get()
+    response = resolve(dns_message)
 
     # Forwarding to external DNS server
     if response is None:
