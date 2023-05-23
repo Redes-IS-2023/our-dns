@@ -5,7 +5,7 @@ import firebase_admin
 from firebase_admin import credentials, db
 from flasgger import Swagger, swag_from
 from flask import Flask, jsonify, request
-from dns_resolver import resolve
+from dns_resolver import build_dns_response, resolve
 from dns_forwarder import forward, forward_package
 from dnslib import DNSRecord
 from exceptions.exception import InvalidParamException, UnreachableHostException
@@ -43,8 +43,13 @@ def post_dns_package():
     # Forwarding to external DNS server
     if response is None:
         response = forward_package(decoded_package)
-        return handle_encode(response)
-    return jsonify(response)
+        encoded_reply = handle_encode(response)
+    else:  # Resolve using Firebase db
+        domain = str(dns_message.q.qname)
+        package = build_dns_response(dns_message.header.id, domain, response["resolve"])
+        encoded_reply = handle_encode(package)
+
+    return encoded_reply
 
 
 # Define testing endpoint to retrieve data from Firebase

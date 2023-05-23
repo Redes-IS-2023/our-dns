@@ -53,3 +53,4 @@ To encode a file run the **convert.py** file, this will create a b64.txt that ca
 - [Python | Reading .ini Configuration Files](https://www.geeksforgeeks.org/python-reading-ini-configuration-files/)
 - [dnspython](https://www.dnspython.org/)
 - [IP Geolocation by DB-IP](https://db-ip.com)
+- [What does a DNS request look like?](https://serverfault.com/questions/173187/what-does-a-dns-request-look-like)
