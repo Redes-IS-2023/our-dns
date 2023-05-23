@@ -48,3 +48,54 @@ post_dns_package_ep_doc = {
     },
     "400": {"description": "Invalid param"},
 }
+
+get_dns_records_ep_doc = {
+    "summary": "Get all DNS records data from Firebase",
+    "responses": {
+        "200": {
+            "description": "Data retrieved successfully",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "example": "single | multi | geo | weight",
+                    },
+                    "resolve": {"type": "array", "example": "[1.1.1.1, 2.2.2.2]"},
+                },
+            },
+        },
+        "404": {"description": "Data not found"},
+    },
+}
+
+get_dns_record_ep_doc = {
+    "summary": "Get dns data from Firebase (use for testing only)",
+    "parameters": [
+        {
+            "name": "param",
+            "in": "path",
+            "type": "string",
+            "description": "Domain name",
+            "example": "google.com",
+            "required": True,
+        }
+    ],
+    "responses": {
+        "200": {
+            "description": "Data retrieved successfully",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "example": "single | multi | geo | weight",
+                    },
+                    "resolve": {"type": "array", "example": "[1.1.1.1, 2.2.2.2]"},
+                },
+            },
+        },
+        "400": {"description": "Invalid param"},
+        "404": {"description": "Data not found"},
+    },
+}

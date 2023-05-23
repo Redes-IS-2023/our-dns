@@ -67,6 +67,25 @@ def get_dns_testing(param):
     return jsonify(response)
 
 
+# Define endpoint to retrieve all records data from Firebase
+@app.route("/api/records/", methods=["GET"])
+@swag_from(get_dns_records_ep_doc)
+def get_dns_records():
+    ref = db.reference("/")
+    response = ref.get()
+    return jsonify(response)
+
+
+# Define endpoint to retrieve one record data from Firebase
+@app.route("/api/record/<param>", methods=["GET"])
+@swag_from(get_dns_record_ep_doc)
+def get_dns_record(param):
+    param = "/".join(param.split(".")[::-1])
+    ref = db.reference(param)
+    response = ref.get()
+    return jsonify(response)
+
+
 @app.errorhandler(InvalidParamException)
 def handle_invalid_param(error):
     response = jsonify({"code": 400, "error": str(error)})
