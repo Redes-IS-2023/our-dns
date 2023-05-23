@@ -3,19 +3,14 @@
 ## Dependencies
 
 - Docker
-- Python with the _requirements.txt_ (if you want to run the project locally)
+- Python with the dependencies listed on the `api/requirements.txt` file (if you want to run the project locally)
 
 ## Running the project
 
-1. By running Docker compose `docker compose up`
-
-2. Run an specific component
-
-   1. API
-      1. Build the image `docker build -t our-dns-api .`
-      2. Run the image `docker run -p 5000:5000 our-dns-api`
-
-3. By using VSCode, the .vscode/launch.json is configure to run the currently open file, open api/main.py and just run it.
+1. Use the Makefile to build and run the project
+   - `make compose` runs docker compose up
+   - `make docker-api` runs docker image build for the api
+   - `make test` runs all unit tests
 
 ## API
 

@@ -4,10 +4,9 @@ import os
 import dns.resolver
 import dns.query
 import dns.message
-from util.error_handler import isBytes
 
-
-from exceptions.exception import UnreachableHostException
+from api.util.error_handler import isBytes
+from api.exceptions.exception import UnreachableHostException
 
 
 # Get current project path

@@ -5,12 +5,13 @@ import firebase_admin
 from firebase_admin import credentials, db
 from flasgger import Swagger, swag_from
 from flask import Flask, jsonify, request
-from dns_resolver import build_dns_response, resolve
-from dns_forwarder import forward, forward_package
 from dnslib import DNSRecord
-from exceptions.exception import InvalidParamException, UnreachableHostException
-from util.b64coder import handle_decode, handle_encode
-from swagger_doc.doc import *
+
+from api.dns_forwarder import forward, forward_package
+from api.dns_resolver import build_dns_response, resolve
+from api.exceptions.exception import InvalidParamException, UnreachableHostException
+from api.swagger_doc.doc import *
+from api.util.b64coder import handle_decode, handle_encode
 
 # Get current project path
 base_dir = os.path.dirname(os.path.abspath(__file__))

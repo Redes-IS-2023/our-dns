@@ -1,7 +1,7 @@
 import base64
 
-from util.error_handler import isBytes
-from exceptions.exception import InvalidParamException
+from api.exceptions.exception import InvalidParamException
+from api.util.error_handler import isBytes
 
 
 # Decodes from base64 to binary

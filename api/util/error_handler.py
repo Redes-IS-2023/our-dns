@@ -1,4 +1,4 @@
-from exceptions.exception import InvalidParamException
+from api.exceptions.exception import InvalidParamException
 
 
 def isBytes(param):
