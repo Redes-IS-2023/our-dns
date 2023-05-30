@@ -50,7 +50,7 @@ post_dns_package_ep_doc = {
 }
 
 get_dns_records_ep_doc = {
-    "summary": "Get all DNS records data from Firebase",
+    "summary": "Gets all DNS records data from Firebase",
     "responses": {
         "200": {
             "description": "Data retrieved successfully",
@@ -70,7 +70,7 @@ get_dns_records_ep_doc = {
 }
 
 get_dns_record_ep_doc = {
-    "summary": "Get dns data from Firebase (use for testing only)",
+    "summary": "Get a DNS record data from Firebase",
     "parameters": [
         {
             "name": "param",
@@ -98,4 +98,70 @@ get_dns_record_ep_doc = {
         "400": {"description": "Invalid param"},
         "404": {"description": "Data not found"},
     },
+}
+
+post_dns_record_ep_doc = {
+    "summary": "Post a new DNS record data to Firebase",
+    "parameters": [
+        {
+            "in": "body",
+            "name": "data",
+            "description": "New Json record data",
+            "required": True,
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "example": "single | multi | geo | weight",
+                    },
+                    "resolve": {"type": "array", "example": "[1.1.1.1, 2.2.2.2]"},
+                },
+            },
+        }
+    ]
+}
+
+put_dns_record_ep_doc = {
+    "summary": "Updates a DNS record data to Firebase",
+    "parameters": [
+        {
+            "name": "param",
+            "in": "path",
+            "type": "string",
+            "description": "Domain name",
+            "example": "google.com",
+            "required": True,
+        },
+        {
+            "in": "body",
+            "name": "data",
+            "description": "New record data to be updated",
+            "required": True,
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "example": "single | multi | geo | weight",
+                    },
+                    "resolve": {"type": "array", "example": "[1.1.1.1, 2.2.2.2]"},
+                },
+            },
+        }
+    ]
+}
+
+delete_dns_record_ep_doc = {
+    "summary": "Deletes a DNS record data to Firebase",
+    "parameters": [
+        {
+            "name": "param",
+            "in": "path",
+            "type": "string",
+            "description": "Domain name",
+            "example": "google.com",
+            "required": True,
+        },
+    ]
 }

@@ -1,3 +1,4 @@
+import json
 import os
 import configparser
 import firebase_admin
@@ -84,6 +85,39 @@ def get_dns_record(param):
     param = "/".join(param.split(".")[::-1])
     ref = db.reference(param)
     response = ref.get()
+    return jsonify(response)
+
+
+# Define endpoint to add a new record to Firebase
+@app.route("/api/record/", methods=["POST"])
+@swag_from(post_dns_record_ep_doc)
+def post_dns_record():
+    data = request.data.decode('utf-8')
+    data = json.loads(data)
+    ref = db.reference("/")
+    response = ref.update(data)
+    return jsonify(response)
+
+
+# Define endpoint to update a record from Firebase
+@app.route("/api/record/<param>", methods=["PUT"])
+@swag_from(put_dns_record_ep_doc)
+def put_dns_record(param):
+    param = "/".join(param.split(".")[::-1])
+    data = request.data.decode('utf-8')
+    data = json.loads(data)
+    ref = db.reference(param)
+    response = ref.update(data)
+    return jsonify(response)
+
+
+# Define endpoint to delete a record from Firebase
+@app.route("/api/record/<param>", methods=["DELETE"])
+@swag_from(delete_dns_record_ep_doc)
+def delete_dns_record(param):
+    param = "/".join(param.split(".")[::-1])
+    ref = db.reference(param)
+    response = ref.delete()
     return jsonify(response)
 
 
