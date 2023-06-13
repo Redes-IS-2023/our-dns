@@ -17,6 +17,10 @@
 To access the API documentation go to:
 [http://localhost:5000/apidocs/#/](http://localhost:5000/apidocs/#/)
 
+## Web
+
+Go to the directory web/app and run the command `npm start`
+
 ## Firebase
 
 To see an example of the realtime DB semi-structured data go to the next [file](/firebasedb/our-dns-default-rtdb-export.json)
