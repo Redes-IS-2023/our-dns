@@ -13,7 +13,9 @@ function DnsRecordComponent(props) {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(props.endpointGet);
+      var endpoint = props.endpointGet;
+      if (props.code) endpoint += props.code;
+      const response = await fetch(endpoint);
       const data = await response.json();
       setData(data);
     } catch (error) {

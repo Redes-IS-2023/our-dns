@@ -19,7 +19,12 @@ To access the API documentation go to:
 
 ## Web
 
-Go to the directory web/app and run the command `npm start`
+Go to the directory web/app and run the commands:
+
+1.  `yarn install`
+2.  `yarn start`
+
+App will run on port _3000_
 
 ## Firebase
 

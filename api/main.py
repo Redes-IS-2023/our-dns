@@ -2,8 +2,9 @@ import json
 import os
 import configparser
 import firebase_admin
+import requests
 
-from firebase_admin import credentials, db
+from firebase_admin import credentials, db, firestore
 from flasgger import Swagger, swag_from
 from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
@@ -24,6 +25,7 @@ config_path = os.path.join(base_dir, "config.ini")
 config.read(config_path)
 cred_fname = config.get("DEFAULT", "cred_fname")
 firebase_url = config.get("DEFAULT", "firebase_url")
+collection_name = config.get("DEFAULT", "collection_name")
 
 # Initialize Firebase credentials
 cred_path = os.path.join(base_dir, "cred", cred_fname)
@@ -37,6 +39,7 @@ CORS(app, resources={r"/*": {"origins": "*"}}, send_wildcard=True)
 
 # Swagger
 swagger = Swagger(app)
+
 
 # Define endpoint to redirect encoded package to DNS server
 @app.route("/api/dns_resolver/", methods=["POST"])
@@ -98,7 +101,7 @@ def get_dns_record(param):
 @cross_origin()
 @swag_from(post_dns_record_ep_doc)
 def post_dns_record():
-    data = request.data.decode('utf-8')
+    data = request.data.decode("utf-8")
     data = json.loads(data)
     ref = db.reference("/")
     response = ref.update(data)
@@ -110,7 +113,7 @@ def post_dns_record():
 @swag_from(put_dns_record_ep_doc)
 def put_dns_record(param):
     param = "/".join(param.split(".")[::-1])
-    data = request.data.decode('utf-8')
+    data = request.data.decode("utf-8")
     data = json.loads(data)
     ref = db.reference(param)
     response = ref.update(data)
@@ -125,6 +128,21 @@ def delete_dns_record(param):
     ref = db.reference(param)
     response = ref.delete()
     return jsonify(response)
+
+
+# Define endpoint to retrieve ip range of country from Firestore
+@app.route("/api/global/<param>", methods=["GET"])
+@swag_from(get_dns_global_ep_doc)
+def get_global_range(param):
+    db = firestore.client()
+    docs = db.collection(collection_name).where("code", "==", param).stream()
+
+    result = []
+    for doc in docs:
+        json = {"id": doc.id, **doc.to_dict()}
+        result.append(json)
+
+    return result
 
 
 @app.errorhandler(InvalidParamException)
@@ -143,4 +161,4 @@ def handle_unreachable_host(error):
 
 # Run the app on localhost:5000
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="0.0.0.0")

@@ -12,3 +12,13 @@
   flex-wrap: wrap;
   gap: 24px;
 }
+
+.section {
+  width: 400px;
+  height: 800px;
+  padding: 12px;
+}
+
+.label {
+  width: 100%;
+}

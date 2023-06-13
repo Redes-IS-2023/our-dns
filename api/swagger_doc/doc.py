@@ -119,7 +119,7 @@ post_dns_record_ep_doc = {
                 },
             },
         }
-    ]
+    ],
 }
 
 put_dns_record_ep_doc = {
@@ -148,8 +148,8 @@ put_dns_record_ep_doc = {
                     "resolve": {"type": "array", "example": "[1.1.1.1, 2.2.2.2]"},
                 },
             },
-        }
-    ]
+        },
+    ],
 }
 
 delete_dns_record_ep_doc = {
@@ -163,5 +163,47 @@ delete_dns_record_ep_doc = {
             "example": "google.com",
             "required": True,
         },
-    ]
+    ],
+}
+
+get_dns_global_ep_doc = {
+    "summary": "Get all DNS global document from Firestore that matches the code",
+    "parameters": [
+        {
+            "name": "param",
+            "in": "path",
+            "type": "string",
+            "description": "Country Code",
+            "example": "DE",
+            "required": True,
+        }
+    ],
+    "responses": {
+        "200": {
+            "description": "Data retrieved successfully",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "example": "001NzhiUybsGfShYxuqh",
+                    },
+                    "from": {
+                        "type": "string",
+                        "example": "0.0.0.0",
+                    },
+                    "to": {
+                        "type": "string",
+                        "example": "255.255.255.255",
+                    },
+                    "to": {
+                        "type": "string",
+                        "example": "DE",
+                    },
+                },
+            },
+        },
+        "400": {"description": "Invalid param"},
+        "404": {"description": "Data not found"},
+    },
 }
