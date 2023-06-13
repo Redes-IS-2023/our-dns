@@ -6,6 +6,7 @@ import firebase_admin
 from firebase_admin import credentials, db
 from flasgger import Swagger, swag_from
 from flask import Flask, jsonify, request
+from flask_cors import CORS, cross_origin
 from dnslib import DNSRecord
 
 from api.dns_forwarder import forward, forward_package
@@ -31,8 +32,11 @@ firebase_admin.initialize_app(cred, {"databaseURL": firebase_url})
 
 # Initialize Flask & Swagger app
 app = Flask(__name__)
-swagger = Swagger(app)
+CORS(app, resources={r"/*": {"origins": "*"}}, send_wildcard=True)
 
+
+# Swagger
+swagger = Swagger(app)
 
 # Define endpoint to redirect encoded package to DNS server
 @app.route("/api/dns_resolver/", methods=["POST"])
@@ -71,6 +75,7 @@ def get_dns_testing(param):
 
 # Define endpoint to retrieve all records data from Firebase
 @app.route("/api/records/", methods=["GET"])
+@cross_origin()
 @swag_from(get_dns_records_ep_doc)
 def get_dns_records():
     ref = db.reference("/")
@@ -90,6 +95,7 @@ def get_dns_record(param):
 
 # Define endpoint to add a new record to Firebase
 @app.route("/api/record/", methods=["POST"])
+@cross_origin()
 @swag_from(post_dns_record_ep_doc)
 def post_dns_record():
     data = request.data.decode('utf-8')
@@ -137,4 +143,4 @@ def handle_unreachable_host(error):
 
 # Run the app on localhost:5000
 if __name__ == "__main__":
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0", debug=True)

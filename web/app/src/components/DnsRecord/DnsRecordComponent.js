@@ -1,10 +1,10 @@
-import styles from "./DnsRecord.module.css";
+import styles from "./DnsRecordComponent.module.css";
 
 import React, { useState, useEffect } from "react";
-import JsonEditor from "./JsonEditor";
+import JsonEditorComponent from "../JsonEditor/JsonEditorComponent";
 import { Button } from "react-bootstrap";
 
-function DnsRecord(props) {
+function DnsRecordComponent(props) {
   const [data, setData] = useState({});
 
   useEffect(() => {
@@ -13,7 +13,7 @@ function DnsRecord(props) {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(props.endpoint);
+      const response = await fetch(props.endpointGet);
       const data = await response.json();
       setData(data);
     } catch (error) {
@@ -23,15 +23,24 @@ function DnsRecord(props) {
 
   const updateData = async () => {
     try {
-      //const response = await push("http://127.0.0.1:5000/api/records");
+      await fetch(props.endpointPost, {
+        method: "POST",
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((json) => console.log(json));
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
+  const editorChanged = (key, value, parent, data) => {
+    setData(data);
+  };
+
   return (
     <div className={styles.container}>
-      <JsonEditor data={data}></JsonEditor>
+      <JsonEditorComponent data={data} onChange={editorChanged} />
       <div className={styles.submit}>
         <Button variant="success" onClick={updateData}>
           Push changes
@@ -44,4 +53,4 @@ function DnsRecord(props) {
   );
 }
 
-export default DnsRecord;
+export default DnsRecordComponent;
