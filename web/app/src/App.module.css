@@ -1,0 +1,14 @@
+.App {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  margin: 40px 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  gap: 24px;
+}
