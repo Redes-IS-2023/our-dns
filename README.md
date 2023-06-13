@@ -10,6 +10,7 @@
 1. Use the Makefile to build and run the project
    - `make compose` runs docker compose up
    - `make docker-api` runs docker image build for the api
+   - `make docker-web` runs docker image build for the web
    - `make test` runs all unit tests
 
 ## API

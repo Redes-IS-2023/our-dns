@@ -3,7 +3,7 @@ import styles from "./App.module.css";
 import DnsRecord from "./components/DnsRecord/DnsRecordComponent";
 
 function App() {
-  const host = "http://127.0.0.1:5000/api/";
+  const host = "http://0.0.0.0:5000/api/";
   const endpointDnsGet = `${host}records/`;
   const endpointDnsPost = `${host}record/`;
   const endpointGlobal = host + "global/";

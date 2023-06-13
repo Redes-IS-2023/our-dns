@@ -12,3 +12,11 @@ services:
       - FLASK_ENV=development
     volumes:
       - ./api:/usr/src/app
+  web:
+    build:
+      context: .
+      dockerfile: dockerfile.web
+    ports:
+      - 3000:3000
+    volumes:
+      - ./web/app:/app
