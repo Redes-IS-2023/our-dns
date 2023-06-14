@@ -1,9 +1,10 @@
 
 FROM gcc:latest
 
-WORKDIR /usr/src/app
 
-COPY b.c /usr/src/app/
+COPY . /usr/src/app/
+
+WORKDIR /usr/src/app/
 
 RUN gcc -o b b.c
 

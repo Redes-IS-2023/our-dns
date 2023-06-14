@@ -36,7 +36,7 @@ char* encodeBase64(const char* data, int length) {
 
 
 void saveQRToFile(int qr) {
-    FILE* file = fopen("./docs/qr.txt", "w");
+    FILE* file = fopen("qr.txt", "w");
     if (file == NULL) {
         perror("Error al abrir el archivo qr.txt");
         return;
@@ -47,7 +47,7 @@ void saveQRToFile(int qr) {
 }
 
 void saveOPCODEToFile(int opcode) {
-    FILE* file = fopen("./docs/opcode.txt", "w");
+    FILE* file = fopen("opcode.txt", "w");
     if (file == NULL) {
         perror("Error al abrir el archivo opcode.txt");
         return;
@@ -58,7 +58,7 @@ void saveOPCODEToFile(int opcode) {
 }
 
 void saveURLToFile(const char* url) {
-    FILE* file = fopen("./docs/url.txt", "w");
+    FILE* file = fopen("url.txt", "w");
     if (file == NULL) {
         perror("Error al abrir el archivo url.txt");
         return;
@@ -69,7 +69,7 @@ void saveURLToFile(const char* url) {
 }
 
 void saveDataToFile(const char* data, int length) {
-    FILE* file = fopen("./docs/data.txt", "w");
+    FILE* file = fopen("data.txt", "w");
     if (file == NULL) {
         perror("Error al abrir el archivo");
         return;
@@ -129,12 +129,6 @@ void processDNSPacket(const char* buffer, int bytesRead) {
     free(base64URL);
 }
 int main() {
-     // Crear la carpeta "docs" si no existe
-    int result = mkdir("./docs", 0777);
-    if (result != 0) {
-        printf("Error al crear la carpeta.\n");
-        return 1;
-    }
 
 
     int sockfd;
